@@ -8,6 +8,7 @@ import com.tappli.cachesample.data.user.repository.DetailUserRepositoryImpl
 import com.tappli.cachesample.domain.user.model.UserId
 import com.tappli.cachesample.domain.user.usecase.GetDetailUserFlowUseCaseImpl
 import com.tappli.cachesample.domain.user.usecase.UpdateDetailUserUseCaseImpl
+import com.tappli.myapplication.presentation.common.LoadState
 import kotlinx.android.synthetic.main.activity_main.*
 
 class DetailUserActivity : AppCompatActivity(R.layout.activity_main) {
@@ -24,8 +25,19 @@ class DetailUserActivity : AppCompatActivity(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        detailUserViewModel.detailUser.observe(this, Observer {
-            helloTextView.text = it.run { "${id.value}: ${name} (${count}) - ${message}" }
+        detailUserViewModel.detailUserState.observe(this, Observer { state ->
+            when (state) {
+                is LoadState.Loading -> {
+                    helloTextView.text = "Loading..."
+                }
+                is LoadState.Loaded -> {
+                    helloTextView.text = state.value.run { "${id.value}: ${name} (${count}) - ${message}" }
+                }
+                is LoadState.Error -> {
+                    helloTextView.text = state.e.localizedMessage
+                }
+            }
+
         })
     }
 }
