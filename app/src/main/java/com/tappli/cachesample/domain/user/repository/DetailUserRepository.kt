@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface DetailUserRepository {
     suspend fun getDetailUserFlow(id: UserId): Flow<DetailUser>
+    suspend fun updateDetailUser(id: UserId)
 }
