@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.tappli.cachesample.R
-import com.tappli.cachesample.data.user.repository.DetailUserFlowRepositoryImpl
+import com.tappli.cachesample.data.user.repository.DetailUserRepositoryImpl
 import com.tappli.cachesample.domain.user.model.UserId
 import com.tappli.cachesample.domain.user.usecase.GetDetailUserFlowUseCaseImpl
 import kotlinx.android.synthetic.main.activity_main.*
@@ -15,7 +15,7 @@ class DetailUserActivity : AppCompatActivity(R.layout.activity_main) {
         DetailUserViewModel(
             application,
             UserId(1),
-            GetDetailUserFlowUseCaseImpl(DetailUserFlowRepositoryImpl())
+            GetDetailUserFlowUseCaseImpl(DetailUserRepositoryImpl())
         )
     }
 
