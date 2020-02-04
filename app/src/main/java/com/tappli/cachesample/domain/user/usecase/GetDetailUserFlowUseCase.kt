@@ -5,5 +5,5 @@ import com.tappli.cachesample.domain.user.model.UserId
 import kotlinx.coroutines.flow.Flow
 
 interface GetDetailUserFlowUseCase {
-    suspend fun get(id: UserId, forceFetch: Boolean = false): Flow<DetailUser>
+    suspend fun get(id: UserId): Flow<DetailUser>
 }

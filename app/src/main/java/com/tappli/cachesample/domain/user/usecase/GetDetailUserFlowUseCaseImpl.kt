@@ -9,7 +9,7 @@ class GetDetailUserFlowUseCaseImpl(
     private val detailUserFlowRepository: DetailUserFlowRepository
 ) : GetDetailUserFlowUseCase {
 
-    override suspend fun get(id: UserId, forceFetch: Boolean): Flow<DetailUser> {
+    override suspend fun get(id: UserId): Flow<DetailUser> {
         return detailUserFlowRepository.getDetailUserFlow(id)
     }
 }
