@@ -1,7 +1,8 @@
-package com.tappli.cachesample
+package com.tappli.cachesample.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.tappli.cachesample.R
 
 class MainActivity : AppCompatActivity() {
 
