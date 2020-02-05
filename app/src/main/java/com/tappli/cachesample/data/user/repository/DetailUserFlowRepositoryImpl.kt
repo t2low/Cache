@@ -3,10 +3,10 @@ package com.tappli.cachesample.data.user.repository
 import com.tappli.cachesample.data.user.cache.DetailUserCache
 import com.tappli.cachesample.domain.user.model.DetailUser
 import com.tappli.cachesample.domain.user.model.UserId
-import com.tappli.cachesample.domain.user.repository.GetDetailUserFlowRepository
+import com.tappli.cachesample.domain.user.repository.DetailUserFlowRepository
 import kotlinx.coroutines.flow.Flow
 
-class GetDetailUserFlowRepositoryImpl : GetDetailUserFlowRepository {
+class DetailUserFlowRepositoryImpl : DetailUserFlowRepository {
     override suspend fun getDetailUserFlow(id: UserId): Flow<DetailUser> {
         return DetailUserCache.getFlow(id.value)
     }
