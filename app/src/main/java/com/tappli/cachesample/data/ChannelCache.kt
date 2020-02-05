@@ -13,17 +13,17 @@ class ChannelCache<KEY : Any, VALUE : Any>(
 
     private val channels = mutableMapOf<KEY, ConflatedBroadcastChannel<KEY>>()
 
-    override suspend fun load(key: KEY): VALUE? {
-        return cache.load(key)
+    override suspend fun read(key: KEY): VALUE? {
+        return cache.read(key)
     }
 
-    override suspend fun save(key: KEY, value: VALUE?) {
-        cache.save(key, value)
+    override suspend fun write(key: KEY, value: VALUE?) {
+        cache.write(key, value)
         getChannel(key).send(key)
     }
 
     override suspend fun getFlow(key: KEY): Flow<VALUE> {
-        return getChannel(key).asFlow().mapNotNull { cache.load(key) }
+        return getChannel(key).asFlow().mapNotNull { cache.read(key) }
     }
 
     private fun getChannel(key: KEY): ConflatedBroadcastChannel<KEY> {

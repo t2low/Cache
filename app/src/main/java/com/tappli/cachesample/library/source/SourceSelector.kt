@@ -8,8 +8,8 @@ open class SourceSelector<KEY : Any, VALUE : Any>(
 ) : Source<KEY, VALUE> {
 
     override suspend fun get(key: KEY): VALUE {
-        return cache.load(key) ?: source.get(key).also {
-            cache.save(key, it)
+        return cache.read(key) ?: source.get(key).also {
+            cache.write(key, it)
         }
     }
 }
