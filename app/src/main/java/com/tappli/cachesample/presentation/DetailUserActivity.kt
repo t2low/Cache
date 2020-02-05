@@ -1,13 +1,29 @@
 package com.tappli.cachesample.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.tappli.cachesample.R
+import com.tappli.cachesample.data.user.repository.DetailUserFlowRepositoryImpl
+import com.tappli.cachesample.domain.user.model.UserId
+import com.tappli.cachesample.domain.user.usecase.GetDetailUserFlowUseCaseImpl
+import kotlinx.android.synthetic.main.activity_main.*
 
-class DetailUserActivity : AppCompatActivity() {
+class DetailUserActivity : AppCompatActivity(R.layout.activity_main) {
+
+    private val detailUserViewModel by lazy {
+        DetailUserViewModel(
+            application,
+            UserId(1),
+            GetDetailUserFlowUseCaseImpl(DetailUserFlowRepositoryImpl())
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        detailUserViewModel.detailUser.observe(this, Observer {
+            helloTextView.text = it.run { "${id.value}: ${name} (${count}) - ${message}" }
+        })
     }
 }
