@@ -2,7 +2,7 @@ package com.tappli.cachesample.library.cache
 
 import com.tappli.cachesample.library.source.Source
 
-class FetchableCache<KEY : Any, VALUE : Any>(
+open class FetchableCache<KEY : Any, VALUE : Any>(
     private val source: Source<KEY, VALUE>,
     private val cache: Cache<KEY, VALUE>
 ) : Cache<KEY, VALUE> {
