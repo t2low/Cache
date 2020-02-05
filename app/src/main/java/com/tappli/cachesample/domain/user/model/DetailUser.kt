@@ -1,4 +1,4 @@
-package com.tappli.cachesample.domain.model.user
+package com.tappli.cachesample.domain.user.model
 
 class DetailUser(
     id: UserId,
