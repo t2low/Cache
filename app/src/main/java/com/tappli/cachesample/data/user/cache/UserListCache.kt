@@ -2,12 +2,12 @@ package com.tappli.cachesample.data.user.cache
 
 import com.tappli.cachesample.data.common.cache.SizeCache
 import com.tappli.cachesample.domain.user.model.User
-import com.tappli.cachesample.library.cache.Cache
+import com.tappli.cachesample.library.cache.ListCache
 import com.tappli.cachesample.library.flow.FlowAccessor
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.*
 
-object UserListCache : Cache<Int, List<User>>, FlowAccessor<Unit, List<User>> {
+object UserListCache : ListCache<Int, Int, User>, FlowAccessor<Unit, List<User>> {
     private var cachedLastPage: Int = 0
 
     private val idListChannel = ConflatedBroadcastChannel<List<Int>>(emptyList())
@@ -48,5 +48,14 @@ object UserListCache : Cache<Int, List<User>>, FlowAccessor<Unit, List<User>> {
             .filterNotNull()
             .filter { it.isNotEmpty() }
             .map { it.mapNotNull { id -> userCache.read(id) } }
+    }
+
+    override suspend fun findValue(valueKey: Int): User? {
+        return userCache.read(valueKey)
+    }
+
+    override suspend fun updateValue(valueKey: Int, value: User?) {
+        userCache.write(valueKey, value)
+        idListChannel.send(idListChannel.value)
     }
 }
