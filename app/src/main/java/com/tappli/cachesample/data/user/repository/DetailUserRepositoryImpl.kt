@@ -19,7 +19,7 @@ class DetailUserRepositoryImpl : DetailUserRepository {
     }
 
     override suspend fun setNewCount(id: UserId, newCount: Int) {
-        val detailuser = UserApi.setNewCount(id.value, newCount)
-        DetailUserCache.write(id.value, detailuser)
+        val detailUser = UserApi.setNewCount(id.value, newCount)
+        DetailUserCache.write(id.value, detailUser)
     }
 }
