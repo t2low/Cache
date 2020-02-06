@@ -11,5 +11,5 @@ object DetailUserUpdater : CacheUpdater<Int, DetailUser>(
             return UserApi.getDetailUser(key)
         }
     },
-    DetailUserCache
+    UserCaches
 )

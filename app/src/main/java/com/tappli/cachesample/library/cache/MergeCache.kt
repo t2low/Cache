@@ -7,6 +7,6 @@ open class MergeCache<KEY : Any, VALUE : Any>(private val mainCache: Cache<KEY, 
 
     override suspend fun write(key: KEY, value: VALUE?) {
         mainCache.write(key, value)
-        subCaches.forEach { it.write(key, value) }
+        subCaches.filterNot { it == mainCache }.forEach { it.write(key, value) }
     }
 }
