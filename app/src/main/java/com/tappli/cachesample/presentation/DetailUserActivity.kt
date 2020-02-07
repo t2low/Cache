@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.tappli.cachesample.R
 import com.tappli.cachesample.domain.user.model.UserId
@@ -35,13 +36,21 @@ class DetailUserActivity : AppCompatActivity(R.layout.activity_main) {
         detailUserViewModel.detailUserState.observe(this, Observer { state ->
             when (state) {
                 is LoadState.Loading -> {
-                    helloTextView.text = "Loading..."
+                    touchGuardTextView.text = "Loading..."
+                    touchGuardTextView.isVisible = true
                 }
                 is LoadState.Loaded -> {
-                    helloTextView.text = state.value.run { "${id.value}: ${name} (${count}) - ${message}" }
+                    touchGuardTextView.isVisible = false
+                    state.value.run {
+                        idTextView.text = id.value.toString()
+                        nameTextView.text = name
+                        messageTextView.text = message
+                        countTextView.text = count.toString()
+                    }
                 }
                 is LoadState.Error -> {
-                    helloTextView.text = state.e.localizedMessage
+                    touchGuardTextView.text = state.e.localizedMessage
+                    touchGuardTextView.isVisible = true
                 }
             }
 

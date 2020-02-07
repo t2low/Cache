@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CacheSample</string>
+    <string name="increment">+1</string>
 </resources>
