@@ -8,6 +8,7 @@ import com.tappli.cachesample.domain.user.repository.DetailUserRepository
 import com.tappli.cachesample.domain.user.repository.UserListRepository
 import com.tappli.cachesample.domain.user.usecase.*
 import com.tappli.cachesample.presentation.DetailUserViewModel
+import com.tappli.cachesample.presentation.UserListViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
@@ -34,6 +35,7 @@ class CacheApplication : Application() {
                     },
                     module {
                         viewModel { (userId: UserId) -> DetailUserViewModel(get(), userId, get(), get()) }
+                        viewModel { UserListViewModel(get(), get(), get()) }
                     }
                 )
             )
