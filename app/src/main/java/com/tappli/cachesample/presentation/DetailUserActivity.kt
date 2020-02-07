@@ -1,5 +1,7 @@
 package com.tappli.cachesample.presentation
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -12,7 +14,20 @@ import org.koin.core.parameter.parametersOf
 
 class DetailUserActivity : AppCompatActivity(R.layout.activity_main) {
 
-    private val detailUserViewModel by viewModel<DetailUserViewModel> { parametersOf(UserId(1)) }
+    companion object {
+        fun createIntent(context: Context, userId: UserId): Intent {
+            return Intent(context, DetailUserActivity::class.java).apply {
+                putExtra(Params.UserId.name, userId.value)
+            }
+        }
+    }
+
+    private enum class Params {
+        UserId
+    }
+
+    private val userId: UserId by lazy { UserId(intent.getIntExtra(Params.UserId.name, 0)) }
+    private val detailUserViewModel by viewModel<DetailUserViewModel> { parametersOf(userId) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

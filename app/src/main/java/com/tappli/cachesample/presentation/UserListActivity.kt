@@ -16,13 +16,17 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class UserListActivity : AppCompatActivity(R.layout.activity_user_list) {
 
     private data class UserItem(private val user: User) : Item(user.id.value.toLong()) {
+        var onClick: (User) -> Unit = {}
+
         override fun getLayout(): Int = R.layout.item_user
 
         override fun bind(viewHolder: GroupieViewHolder, position: Int) {
             viewHolder.itemView.apply {
+                isClickable = true
                 idTextView.text = user.id.value.toString()
                 nameTextView.text = user.name
                 countTextView.text = user.count.toString()
+                setOnClickListener { onClick(user) }
             }
         }
     }
@@ -40,7 +44,11 @@ class UserListActivity : AppCompatActivity(R.layout.activity_user_list) {
                 }
                 is LoadState.Loaded -> {
                     messageTextView.text = ""
-                    adapter.updateAsync(it.value.map { user -> UserItem(user) })
+                    adapter.updateAsync(it.value.map { user ->
+                        UserItem(user).apply {
+                            onClick = this@UserListActivity::goDetailUserActivity
+                        }
+                    })
                 }
                 is LoadState.Error -> {
                     messageTextView.text = it.e.toString()
@@ -48,5 +56,9 @@ class UserListActivity : AppCompatActivity(R.layout.activity_user_list) {
             }
         })
         userListView.adapter = adapter
+    }
+
+    private fun goDetailUserActivity(user: User) {
+        startActivity(DetailUserActivity.createIntent(this, user.id))
     }
 }
