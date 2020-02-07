@@ -13,6 +13,11 @@ object UserApi {
         return makeUser(id)
     }
 
+    suspend fun setNewCount(id: Int, count: Int): DetailUser {
+        delay(500)
+        return makeUser(id, count)
+    }
+
     suspend fun getUserList(page: Int): List<User> {
         delay(1500)
 
@@ -23,7 +28,7 @@ object UserApi {
         return (startId..endId).map { makeUser(it) }
     }
 
-    private fun makeUser(id: Int): DetailUser {
+    private fun makeUser(id: Int, count: Int = 0): DetailUser {
         return DetailUser(
             UserId(id), "Name#${id}", 0, "message ${id}"
         )
