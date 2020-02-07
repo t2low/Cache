@@ -46,6 +46,7 @@ object UserListCache : Cache<Int, List<User>>, FlowAccessor<Unit, List<User>> {
         return idListChannel
             .asFlow()
             .filterNotNull()
+            .filter { it.isNotEmpty() }
             .map { it.mapNotNull { id -> userCache.read(id) } }
     }
 }

@@ -17,7 +17,7 @@ object UserApi {
         delay(1500)
 
         val lengthPerPage = 20
-        val startId = max(page, 1) * lengthPerPage
+        val startId = max(page - 1, 0) * lengthPerPage + 1
         val endId = startId + lengthPerPage - 1
 
         return (startId..endId).map { makeUser(it) }
@@ -25,7 +25,7 @@ object UserApi {
 
     private fun makeUser(id: Int): DetailUser {
         return DetailUser(
-            UserId(id), "No.${id}", 0, "message ${id}"
+            UserId(id), "Name#${id}", 0, "message ${id}"
         )
     }
 }
