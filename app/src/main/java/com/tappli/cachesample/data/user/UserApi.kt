@@ -30,7 +30,7 @@ object UserApi {
 
     private fun makeUser(id: Int, count: Int = 0): DetailUser {
         return DetailUser(
-            UserId(id), "Name#${id}", 0, "message ${id}"
+            UserId(id), "Name#${id}", count, "message ${id}"
         )
     }
 }

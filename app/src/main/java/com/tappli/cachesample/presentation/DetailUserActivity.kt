@@ -33,6 +33,8 @@ class DetailUserActivity : AppCompatActivity(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        countUpButton.setOnClickListener { detailUserViewModel.countUp() }
+
         detailUserViewModel.detailUserState.observe(this, Observer { state ->
             when (state) {
                 is LoadState.Loading -> {
@@ -53,7 +55,6 @@ class DetailUserActivity : AppCompatActivity(R.layout.activity_main) {
                     touchGuardTextView.isVisible = true
                 }
             }
-
         })
     }
 }

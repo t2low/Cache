@@ -30,11 +30,12 @@ class CacheApplication : Application() {
                     module {
                         single<GetDetailUserFlowUseCase> { GetDetailUserFlowUseCaseImpl(get()) }
                         single<UpdateDetailUserUseCase> { UpdateDetailUserUseCaseImpl(get()) }
+                        single<SetNewCountUseCase> { SetNewCountUseCaseImpl(get()) }
                         single<GetUserListFlowUseCase> { GetUserListFlowUseCaseImpl(get()) }
                         single<UpdateUserListUseCase> { UpdateUserListUseCaseImpl(get()) }
                     },
                     module {
-                        viewModel { (userId: UserId) -> DetailUserViewModel(get(), userId, get(), get()) }
+                        viewModel { (userId: UserId) -> DetailUserViewModel(get(), userId, get(), get(), get()) }
                         viewModel { UserListViewModel(get(), get(), get()) }
                     }
                 )
