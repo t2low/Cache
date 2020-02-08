@@ -23,4 +23,9 @@ class DetailUserRepositoryImpl : DetailUserRepository {
         val detailUser = UserApi.setNewCount(id.value, newCount)
         UserCaches.write(id.value, detailUser)
     }
+
+    override suspend fun deleteUser(id: UserId) {
+        UserApi.deleteUser(id.value)
+        UserCaches.write(id.value, null)
+    }
 }

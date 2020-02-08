@@ -28,6 +28,10 @@ object UserApi {
         return (startId..endId).map { makeUser(it) }
     }
 
+    suspend fun deleteUser(userId: Int) {
+        delay(500)
+    }
+
     private fun makeUser(id: Int, count: Int = 0): DetailUser {
         return DetailUser(
             UserId(id), "Name#${id}", count, "message ${id}"

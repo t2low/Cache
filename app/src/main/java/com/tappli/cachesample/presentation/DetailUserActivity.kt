@@ -34,6 +34,7 @@ class DetailUserActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
 
         countUpButton.setOnClickListener { detailUserViewModel.countUp() }
+        deleteButton.setOnClickListener { detailUserViewModel.deleteUser() }
 
         detailUserViewModel.detailUserState.observe(this, Observer { state ->
             when (state) {
@@ -51,10 +52,13 @@ class DetailUserActivity : AppCompatActivity(R.layout.activity_main) {
                     }
                 }
                 is LoadState.Error -> {
-                    touchGuardTextView.text = state.e.localizedMessage
+                    touchGuardTextView.text = state.e.toString()
                     touchGuardTextView.isVisible = true
                 }
             }
+        })
+        detailUserViewModel.closeView.observe(this, Observer {
+            finish()
         })
     }
 }

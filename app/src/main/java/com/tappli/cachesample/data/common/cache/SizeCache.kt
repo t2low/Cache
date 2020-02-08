@@ -12,6 +12,10 @@ class SizeCache<KEY : Any, VALUE : Any>(maxSize: Int) : Cache<KEY, VALUE> {
     }
 
     override suspend fun write(key: KEY, value: VALUE?) {
-        cache.put(key, value)
+        if (value == null) {
+            cache.remove(key)
+        } else {
+            cache.put(key, value)
+        }
     }
 }
