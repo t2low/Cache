@@ -12,16 +12,16 @@ interface FlowAccessorChannel<KEY : Any, VALUE : Any> : Cache<KEY, VALUE>, FlowA
 open class ListChannel<KEY : Any, VALUE : Any>(private val getKeyFunc: (VALUE) -> KEY) {
 
     private val idListChannel = ConflatedBroadcastChannel<List<KEY>>(emptyList())
-    private val valueCache = mutableMapOf<KEY, VALUE>()
+    private val valueCache = mutableMapOf<KEY, VALUE?>()
 
-    fun getValueChannelCache(): FlowAccessorChannel<KEY, VALUE> {
-        return object : FlowAccessorChannel<KEY, VALUE> {
+    val valueChannelCache: FlowAccessorChannel<KEY, VALUE> =
+        object : FlowAccessorChannel<KEY, VALUE> {
             override suspend fun read(key: KEY): VALUE? {
                 return valueCache[key]
             }
 
             override suspend fun write(key: KEY, value: VALUE?) {
-                valueCache[key]
+                valueCache[key] = value
                 if (idListChannel.value.contains(key)) {
                     idListChannel.send(idListChannel.value) // NOTE: IDリストの更新をすることで全体に通知
                 }
@@ -33,7 +33,6 @@ open class ListChannel<KEY : Any, VALUE : Any>(private val getKeyFunc: (VALUE) -
                     .mapNotNull { valueCache[key] }
             }
         }
-    }
 
     suspend fun add(values: List<VALUE>) {
         val newIdList = (idListChannel.value + values.map(getKeyFunc)).distinct()

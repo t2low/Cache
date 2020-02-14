@@ -1,17 +1,15 @@
 package com.tappli.cachesample.data.user.cache
 
-import com.tappli.cachesample.data.common.cache.SizeCache
+import com.tappli.cachesample.data.common.cache.ListChannel
 import com.tappli.cachesample.domain.user.model.User
 import com.tappli.cachesample.library.cache.ListCache
 import com.tappli.cachesample.library.flow.FlowAccessor
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
 
 object UserListCache : ListCache<Int, Int, User>, FlowAccessor<Unit, List<User>> {
     private var cachedLastPage: Int = 0
 
-    private val idListChannel = ConflatedBroadcastChannel<List<Int>>(emptyList())
-    private val userCache = SizeCache<Int, User>(1000)
+    private val userListChannel = ListChannel<Int, User> { it.id.value }
 
     override suspend fun read(key: Int): List<User>? {
         val diff = key - cachedLastPage
@@ -19,7 +17,7 @@ object UserListCache : ListCache<Int, Int, User>, FlowAccessor<Unit, List<User>>
             clear()
             return null
         }
-        val users = idListChannel.value.mapNotNull { userCache.read(it) }
+        val users = userListChannel.getList()
         return if (users.isNotEmpty()) users else null
     }
 
@@ -28,34 +26,24 @@ object UserListCache : ListCache<Int, Int, User>, FlowAccessor<Unit, List<User>>
         if (diff <= 0) {
             clear()
         }
-        val newIds = value?.map { it.id.value } ?: emptyList()
-        value?.forEach {
-            userCache.write(it.id.value, it)
-        }
-        idListChannel.send(idListChannel.value + newIds)
+        userListChannel.add(value ?: emptyList())
         cachedLastPage = key
     }
 
     private suspend fun clear() {
-        idListChannel.value.forEach { userCache.write(it, null) }
-        idListChannel.send(emptyList())
+        userListChannel.clear()
         cachedLastPage = 0
     }
 
     override suspend fun getFlow(key: Unit): Flow<List<User>> {
-        return idListChannel
-            .asFlow()
-            .filterNotNull()
-            .filter { it.isNotEmpty() }
-            .map { it.mapNotNull { id -> userCache.read(id) } }
+        return userListChannel.getListFlow()
     }
 
     override suspend fun findValue(valueKey: Int): User? {
-        return userCache.read(valueKey)
+        return userListChannel.valueChannelCache.read(valueKey)
     }
 
     override suspend fun updateValue(valueKey: Int, value: User?) {
-        userCache.write(valueKey, value)
-        idListChannel.send(idListChannel.value)
+        userListChannel.valueChannelCache.write(valueKey, value)
     }
 }
