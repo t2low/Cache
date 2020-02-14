@@ -11,6 +11,9 @@ object UserListCache : ListCache<Int, Int, User>, FlowAccessor<Unit, List<User>>
 
     private val userListChannel = ListChannel<Int, User> { it.id.value }
 
+    val currentPage: Int
+        get() = cachedLastPage
+
     override suspend fun read(key: Int): List<User>? {
         val diff = key - cachedLastPage
         if (diff < 0) {
