@@ -1,6 +1,6 @@
 package com.tappli.cachesample.data.user.cache
 
-import com.tappli.cachesample.data.common.cache.ListChannel
+import com.tappli.cachesample.library.flow.cache.ListChannel
 import com.tappli.cachesample.domain.user.model.User
 import com.tappli.cachesample.library.cache.ListCache
 import com.tappli.cachesample.library.flow.FlowAccessor

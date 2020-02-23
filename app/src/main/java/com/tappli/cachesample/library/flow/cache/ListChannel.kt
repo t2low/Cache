@@ -1,4 +1,4 @@
-package com.tappli.cachesample.data.common.cache
+package com.tappli.cachesample.library.flow.cache
 
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow

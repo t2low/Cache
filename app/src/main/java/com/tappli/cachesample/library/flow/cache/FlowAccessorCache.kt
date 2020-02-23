@@ -1,4 +1,4 @@
-package com.tappli.cachesample.data.common.cache
+package com.tappli.cachesample.library.flow.cache
 
 import com.tappli.cachesample.library.cache.Cache
 import com.tappli.cachesample.library.flow.FlowAccessor
