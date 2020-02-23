@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.mapNotNull
 
-open class ChannelCache<KEY : Any, VALUE : Any>(
+open class ValueChannelCache<KEY : Any, VALUE : Any>(
     private val cache: Cache<KEY, VALUE>
 ) : FlowAccessorCache<KEY, VALUE> {
 

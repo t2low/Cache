@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.mapNotNull
 
-open class ListChannel<KEY : Any, VALUE : Any>(private val getKeyFunc: (VALUE) -> KEY) {
+open class ListChannelCache<KEY : Any, VALUE : Any>(private val getKeyFunc: (VALUE) -> KEY) {
 
     private val idListChannel = ConflatedBroadcastChannel<List<KEY>>(emptyList())
     private val valueCache = mutableMapOf<KEY, VALUE?>()

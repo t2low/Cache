@@ -1,6 +1,6 @@
 package com.tappli.cachesample.data.user.cache
 
-import com.tappli.cachesample.library.flow.cache.ListChannel
+import com.tappli.cachesample.library.flow.cache.ListChannelCache
 import com.tappli.cachesample.domain.user.model.User
 import com.tappli.cachesample.library.cache.ListCache
 import com.tappli.cachesample.library.flow.FlowAccessor
@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 object UserListCache : ListCache<Int, Int, User>, FlowAccessor<Unit, List<User>> {
     private var cachedLastPage: Int = 0
 
-    private val userListChannel = ListChannel<Int, User> { it.id.value }
+    private val userListChannel = ListChannelCache<Int, User> { it.id.value }
 
     val currentPage: Int
         get() = cachedLastPage
